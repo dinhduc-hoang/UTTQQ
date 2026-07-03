@@ -1,5 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { getSubjectsStorageKey, readJson } from '../utils/subjectsStorage';
+import { fetchDocuments, normalizeDocument } from '../services/documentsService';
+import { getStoredAuth } from '../services/authService';
 
 const SubjectsContext = createContext(null);
 
@@ -13,9 +15,57 @@ function readStoredSubjects(storageKey = getSubjectsStorageKey()) {
     return Array.isArray(parsedValue) ? parsedValue : [];
 }
 
+function mergeSubjects(currentSubjects, incomingSubjects) {
+    const subjectsById = new Map(
+        currentSubjects
+            .filter((subject) => subject?.id)
+            .map((subject) => [String(subject.id), subject])
+    );
+
+    incomingSubjects.forEach((subject) => {
+        if (!subject?.id) {
+            return;
+        }
+
+        const id = String(subject.id);
+        const existingSubject = subjectsById.get(id);
+
+        subjectsById.set(id, {
+            ...existingSubject,
+            ...subject,
+            exercises: subject.exercises?.length ? subject.exercises : existingSubject?.exercises ?? [],
+            source: subject.source ?? 'backend',
+        });
+    });
+
+    return Array.from(subjectsById.values());
+}
+
 export function SubjectsProvider({ children }) {
     const [storageKey, setStorageKey] = useState(getSubjectsStorageKey);
     const [subjects, setSubjects] = useState(() => readStoredSubjects(storageKey));
+
+    const hydrateSubjectsFromBackend = useCallback(async () => {
+        if (!getStoredAuth()?.accessToken) {
+            return;
+        }
+
+        try {
+            const documents = await fetchDocuments();
+            const backendSubjects = documents
+                .map((document) => ({
+                    ...normalizeDocument(document),
+                    source: 'backend',
+                }))
+                .filter((subject) => subject.id);
+
+            setSubjects((currentSubjects) => mergeSubjects(currentSubjects, backendSubjects));
+        } catch (error) {
+            if (error?.message !== 'Vui lÃ²ng Ä‘Äƒng nháº­p!') {
+                console.warn('Could not sync documents from backend.', error);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (typeof window === 'undefined') {
@@ -34,23 +84,27 @@ export function SubjectsProvider({ children }) {
             const nextStorageKey = getSubjectsStorageKey();
 
             if (nextStorageKey === storageKey) {
+                hydrateSubjectsFromBackend();
                 return;
             }
 
             setStorageKey(nextStorageKey);
             setSubjects(readStoredSubjects(nextStorageKey));
+            hydrateSubjectsFromBackend();
         };
 
         window.addEventListener('focus', syncStorageKey);
         window.addEventListener('myweb:auth-updated', syncStorageKey);
         window.addEventListener('storage', syncStorageKey);
 
+        hydrateSubjectsFromBackend();
+
         return () => {
             window.removeEventListener('focus', syncStorageKey);
             window.removeEventListener('myweb:auth-updated', syncStorageKey);
             window.removeEventListener('storage', syncStorageKey);
         };
-    }, [storageKey]);
+    }, [hydrateSubjectsFromBackend, storageKey]);
 
     const addSubject = useCallback((subjectData) => {
         const newSubject = {
