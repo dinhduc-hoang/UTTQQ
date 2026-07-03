@@ -1,0 +1,158 @@
+/* Dùng font Lexend */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700&display=swap');
+/* import font chữ Zen Maru Gothic */
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@100;200;300;400;500;700;900&display=swap');
+@import "tailwindcss";
+
+:root {
+    --font-weight-thin: 100;
+    --font-weight-light: 200;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --app-bg: #ffffff;
+    --app-surface: #ffffff;
+    --app-surface-soft: #f7f7ff;
+    --app-sidebar: #edefff;
+    --app-text: #212121;
+    --app-muted: #858494;
+    --app-border: #e5e7eb;
+    --app-primary: #7152f3;
+}
+
+:root[data-theme='dark'] {
+    --app-bg: #0f1220;
+    --app-surface: #171a2b;
+    --app-surface-soft: #20243a;
+    --app-sidebar: #171a2b;
+    --app-text: #f5f7fb;
+    --app-muted: #a8adc0;
+    --app-border: #2a3047;
+    --app-primary: #9b8cff;
+}
+
+* {
+    font-family: 'Lexend', sans-serif;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    background: var(--app-bg);
+    color: var(--app-text);
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#root {
+    min-height: 100dvh;
+    min-width: 0;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
+
+[data-theme='dark'] .app-shell,
+[data-theme='dark'] .bg-white {
+    background-color: var(--app-bg) !important;
+}
+
+[data-theme='dark'] .app-sidebar,
+[data-theme='dark'] .bg-\[\#EDEFFF\],
+[data-theme='dark'] .bg-\[\#EDEAFE\],
+[data-theme='dark'] .bg-\[\#ecebff\],
+[data-theme='dark'] .bg-\[\#ebe7ff\],
+[data-theme='dark'] .bg-\[\#FAFAFF\],
+[data-theme='dark'] .bg-\[\#f7f7ff\],
+[data-theme='dark'] .bg-gray-50 {
+    background-color: var(--app-surface) !important;
+}
+
+[data-theme='dark'] .bg-\[\#F3F4F6\],
+[data-theme='dark'] .bg-\[\#eee\],
+[data-theme='dark'] .bg-\[\#eeeeee\],
+[data-theme='dark'] .bg-\[\#ebeaf9\],
+[data-theme='dark'] .bg-\[\#efecff\],
+[data-theme='dark'] .bg-\[\#f5f3ff\],
+[data-theme='dark'] .bg-\[\#f8f6ff\],
+[data-theme='dark'] .bg-\[rgba\(162\2c 161\2c 168\2c 0\.1\)\] {
+    background-color: var(--app-surface-soft) !important;
+}
+
+[data-theme='dark'] .text-\[\#212121\],
+[data-theme='dark'] .text-\[\#16151c\],
+[data-theme='dark'] .text-\[\#0c092a\],
+[data-theme='dark'] .text-\[\#1d1830\],
+[data-theme='dark'] .text-\[\#1f1d2c\],
+[data-theme='dark'] .text-\[\#2c2940\],
+[data-theme='dark'] .text-\[\#343a40\],
+[data-theme='dark'] .text-gray-800,
+[data-theme='dark'] .text-gray-900 {
+    color: var(--app-text) !important;
+}
+
+[data-theme='dark'] .text-\[\#858494\],
+[data-theme='dark'] .text-\[\#99A1AF\],
+[data-theme='dark'] .text-\[\#a2a1a8\],
+[data-theme='dark'] .text-\[\#9E9E9E\],
+[data-theme='dark'] .text-\[\#6c757d\],
+[data-theme='dark'] .text-gray-400 {
+    color: var(--app-muted) !important;
+}
+
+[data-theme='dark'] .border-\[\#E5E7EB\],
+[data-theme='dark'] .border-\[\#F3F4F6\],
+[data-theme='dark'] .border-\[\#efeefc\],
+[data-theme='dark'] .border-gray-200,
+[data-theme='dark'] .divide-\[\#F3F4F6\] > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--app-border) !important;
+}
+
+[data-theme='dark'] input,
+[data-theme='dark'] textarea,
+[data-theme='dark'] select {
+    color: var(--app-text);
+    caret-color: var(--app-primary);
+}
+
+[data-theme='dark'] img {
+    color-scheme: dark;
+}
+
+.thin-scrollbar {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(113, 82, 243, 0.28) transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(113, 82, 243, 0.28);
+    border: 1.5px solid transparent;
+    border-radius: 9999px;
+    background-clip: padding-box;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(113, 82, 243, 0.42);
+    border: 1.5px solid transparent;
+    border-radius: 9999px;
+    background-clip: padding-box;
+}
