@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import SideBar from './sideBar';
 import TopBar from './topBar';
 import { ThemeProvider } from '../../contexts/ThemeContext';
+import { SubjectsProvider } from '../../contexts/SubjectsContext';
 
 export default function MainLayout({ children }) {
     const content = children ?? <Outlet />;
@@ -36,6 +37,7 @@ export default function MainLayout({ children }) {
 
     return (
         <ThemeProvider>
+            <SubjectsProvider>
             <div className="app-shell flex h-[100dvh] w-full overflow-hidden bg-white p-3 transition-colors duration-300 sm:p-5 lg:gap-5">
                 {loginToast ? (
                     <div className="fixed left-4 right-4 top-4 z-[120] rounded-[20px] border border-[#dcd7ff] bg-white px-5 py-4 shadow-[0_20px_60px_rgba(17,12,46,0.18)] sm:left-auto sm:right-6 sm:top-6 sm:w-[360px]">
@@ -76,6 +78,7 @@ export default function MainLayout({ children }) {
                     </div>
                 </div>
             </div>
+            </SubjectsProvider>
         </ThemeProvider>
     );
 }
