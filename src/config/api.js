@@ -1,5 +1,9 @@
-const DEFAULT_API_BASE_URL = 'http://localhost:3000';
-const API_BASE_URL = (import.meta.env.VITE_API_URL || DEFAULT_API_BASE_URL).replace(/\/+$/, '');
+const LOCAL_API_BASE_URL = 'http://localhost:3000';
+const DEPLOYED_API_BASE_URL = 'https://imminent-subway-seventy.ngrok-free.dev';
+const isLocalHost = typeof window !== 'undefined'
+  && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const DEFAULT_API_BASE_URL = isLocalHost ? LOCAL_API_BASE_URL : DEPLOYED_API_BASE_URL;
+export const API_BASE_URL = (import.meta.env.VITE_API_URL || DEFAULT_API_BASE_URL).replace(/\/+$/, '');
 
 export const API_ENDPOINTS = {
   // ==================== AUTH ====================

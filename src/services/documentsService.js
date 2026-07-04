@@ -47,15 +47,22 @@ async function requestJson(url, { method = 'GET', token, body, headers } = {}) {
         throw new Error('Vui lòng đăng nhập!');
     }
 
-    const response = await fetch(url, {
-        method,
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-            ...headers,
-        },
-        body,
-    });
+    let response;
+
+    try {
+        response = await fetch(url, {
+            method,
+            headers: {
+                Accept: 'application/json',
+                'ngrok-skip-browser-warning': 'true',
+                Authorization: `Bearer ${accessToken}`,
+                ...headers,
+            },
+            body,
+        });
+    } catch (error) {
+        throw new Error(`Khong goi duoc API ${url}: ${error?.message || 'Network error'}`);
+    }
 
     const payload = await parseJson(response);
 
@@ -95,6 +102,7 @@ export async function uploadDocument({ file, title, token }) {
         method: 'POST',
         headers: {
             Accept: 'application/json',
+            'ngrok-skip-browser-warning': 'true',
             Authorization: `Bearer ${accessToken}`,
         },
         body: formData,
